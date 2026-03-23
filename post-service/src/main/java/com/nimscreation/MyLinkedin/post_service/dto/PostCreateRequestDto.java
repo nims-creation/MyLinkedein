@@ -3,7 +3,6 @@ package com.nimscreation.MyLinkedin.post_service.dto;
 import lombok.Data;
 
 @Data
-public class PostCreateDto {
-
+public class PostCreateRequestDto {
     private String content;
 }
