@@ -9,6 +9,7 @@ import com.nimscreation.MyLinkedin.post_service.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +41,25 @@ public class PostLikeServiceImpl implements PostLikeService {
         postLikeRepository.save(postLike);
 
         log.info("Post with id: {} liked successfully ",postId);
+    }
+
+    @Override
+    @Transactional
+    public void unlikePost(Long postId, Long userId) {
+        log.info("Attempting to unlike the post with id: {}",postId);
+
+        boolean exists = postRepository.existsById(postId);
+        if(!exists) {
+            throw new ResourceNotFoundException("Post not found with id: "+postId);
+        }
+
+        boolean alreadyLiked = postLikeRepository.existsByUserIdAndPostId(userId, postId);
+        if(!alreadyLiked){
+            throw new BadRequestException("Can't unlike the post which is not liked.");
+        }
+
+        postLikeRepository.deleteByUserIdAndPostId(userId, postId);
+        log.info("Post with id: {} unliked successfully ",postId);
+
     }
 }
