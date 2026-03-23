@@ -3,6 +3,7 @@ package com.nimscreation.MyLinkedin.post_service.service.Impl;
 import com.nimscreation.MyLinkedin.post_service.dto.PostCreateRequestDto;
 import com.nimscreation.MyLinkedin.post_service.dto.PostDto;
 import com.nimscreation.MyLinkedin.post_service.entity.Post;
+import com.nimscreation.MyLinkedin.post_service.exception.ResourceNotFoundException;
 import com.nimscreation.MyLinkedin.post_service.repository.PostRepository;
 import com.nimscreation.MyLinkedin.post_service.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,13 @@ public class PostServiceImpl implements PostService {
 
         Post savedPost = postRepository.save(post);
         return modelMapper.map(savedPost, PostDto.class);
+    }
+
+    @Override
+    public PostDto getPostById(Long postId) {
+        log.debug("Retrieving post with Id: {}",postId);
+        Post post = postRepository.findById(postId).orElseThrow(()->
+                new ResourceNotFoundException("Post not found with id: "+postId));
+        return modelMapper.map(post, PostDto.class);
     }
 }
