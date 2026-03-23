@@ -1,3 +1,7 @@
 spring:
   application:
     name: user-service
+
+jwt:
+  secret-key: "MySecreteKeyIsSecreteSooDontTryToFind"
+  expiration: 86400000  # optional (1 day)
