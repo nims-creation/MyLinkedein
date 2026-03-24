@@ -1,8 +1,10 @@
 package com.nimscreation.MyLinkedin.user_service.service.Impl;
 
+import com.nimscreation.MyLinkedin.user_service.dto.LoginRequestDto;
 import com.nimscreation.MyLinkedin.user_service.dto.SignupRequestDto;
 import com.nimscreation.MyLinkedin.user_service.dto.UserDto;
 import com.nimscreation.MyLinkedin.user_service.entity.User;
+import com.nimscreation.MyLinkedin.user_service.exception.ResourceNotFoundException;
 import com.nimscreation.MyLinkedin.user_service.repository.UserRepository;
 import com.nimscreation.MyLinkedin.user_service.service.AuthService;
 import com.nimscreation.MyLinkedin.user_service.utils.PasswordUtil;
@@ -26,5 +28,13 @@ public class AuthServiceImpl implements AuthService {
 
         User saveUser = userRepository.save(user);
         return modelMapper.map(saveUser,UserDto.class);
+    }
+
+    @Override
+    public String login(LoginRequestDto loginRequestDto) {
+        User user = userRepository.findByEmail(loginRequestDto.getEmail())
+                .orElseThrow(()-> new ResourceNotFoundException("User not found with email:"+loginRequestDto.getEmail()));
+
+
     }
 }

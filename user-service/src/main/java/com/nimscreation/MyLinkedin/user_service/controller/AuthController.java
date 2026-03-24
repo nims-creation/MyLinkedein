@@ -1,5 +1,6 @@
 package com.nimscreation.MyLinkedin.user_service.controller;
 
+import com.nimscreation.MyLinkedin.user_service.dto.LoginRequestDto;
 import com.nimscreation.MyLinkedin.user_service.dto.SignupRequestDto;
 import com.nimscreation.MyLinkedin.user_service.dto.UserDto;
 import com.nimscreation.MyLinkedin.user_service.service.AuthService;
@@ -21,7 +22,12 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<UserDto> signUp(@RequestBody SignupRequestDto signupRequestDto){
         UserDto userDto = authService.signup(signupRequestDto);
-
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login (@RequestBody LoginRequestDto loginRequestDto){
+        String token = authService.login(loginRequestDto);
+        return ResponseEntity.ok(token);
     }
 }
