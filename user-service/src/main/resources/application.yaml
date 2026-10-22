@@ -1,3 +1,4 @@
+
 spring:
   application:
     name: user-service
@@ -10,7 +11,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
     properties:
       hibernate:
         jdbc:
@@ -18,3 +18,7 @@ spring:
 
 server:
   port: 9020
+
+jwt:
+  secretKey: Nitesh_is_good_boy
+  expiration: 86400000
