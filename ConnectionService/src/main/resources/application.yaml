@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: ConnectionService
+  neo4j:
+    uri: bolt://neo4j:7687
+    authentication:
+      username: neo4j
+      password: Nitesh1404
+
+server:
+  servlet:
+    context-path: /api/v1/connections
+  port: 9030
+
+
+
+
