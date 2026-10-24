@@ -3,6 +3,7 @@ package com.nimscreation.MyLinkedin.ConnectionService.controller;
 import com.nimscreation.MyLinkedin.ConnectionService.entity.Person;
 import com.nimscreation.MyLinkedin.ConnectionService.services.ConnectionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/core")
 @RequiredArgsConstructor
-public class ConnectionController {
+@Slf4j
+public class ConnectionsController {
 
     private final ConnectionService connectionsService;
 
