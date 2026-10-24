@@ -9,9 +9,13 @@ spring:
 
 server:
   servlet:
-    context-path: /api/v1/connections
+    context-path: /connections
   port: 9030
 
+eureka:
+  client:
+  service-url:
+  defaultZone : http://localhost:8761/eureka
 
 
 
