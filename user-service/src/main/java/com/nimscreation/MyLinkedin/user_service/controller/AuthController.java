@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class UserController {
 
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signUp(@RequestBody SignupRequestDto signupRequestDto){
-        UserDto userDto = authService.signup(signupRequestDto);
+    public ResponseEntity<UserDto> signUp(@RequestBody SignupRequestDto signupRequestDto) {
+        UserDto userDto = authService.signUp(signupRequestDto);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login (@RequestBody LoginRequestDto loginRequestDto){
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto) {
         String token = authService.login(loginRequestDto);
         return ResponseEntity.ok(token);
     }
