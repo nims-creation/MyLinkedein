@@ -10,15 +10,15 @@ public class ApiError {
 
     private LocalDateTime timeStamp;
     private String error;
-    private int statusCode;
+    private HttpStatus statusCode;
 
-    public ApiError(){
+    public ApiError() {
         this.timeStamp = LocalDateTime.now();
     }
 
-    public ApiError(String error, HttpStatus statusCode){
+    public ApiError(String error, HttpStatus statusCode) {
         this();
         this.error = error;
-        this.statusCode = statusCode.value();
+        this.statusCode = statusCode;
     }
 }

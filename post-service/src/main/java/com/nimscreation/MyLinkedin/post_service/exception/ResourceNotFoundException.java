@@ -1,8 +1,8 @@
 package com.nimscreation.MyLinkedin.post_service.exception;
 
-public class ResourceNotFoundException extends RuntimeException {
-
-    public ResourceNotFoundException(String message){
+public class ResourceNotFoundException extends RuntimeException{
+    public ResourceNotFoundException(String message) {
         super(message);
     }
 }
+
