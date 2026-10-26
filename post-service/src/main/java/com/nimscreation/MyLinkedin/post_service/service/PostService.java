@@ -1,5 +1,6 @@
 package com.nimscreation.MyLinkedin.post_service.service;
 
+import com.nimscreation.MyLinkedin.post_service.auth.AuthContextHolder;
 import com.nimscreation.MyLinkedin.post_service.client.ConnectionsServiceClient;
 import com.nimscreation.MyLinkedin.post_service.dto.PostCreateRequestDto;
 import com.nimscreation.MyLinkedin.post_service.dto.PostDto;
