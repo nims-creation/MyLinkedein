@@ -6,3 +6,4 @@ import lombok.Data;
 public class PostCreateRequestDto {
     private String content;
 }
+
