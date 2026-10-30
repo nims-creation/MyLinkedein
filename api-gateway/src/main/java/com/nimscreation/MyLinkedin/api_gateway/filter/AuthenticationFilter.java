@@ -1,5 +1,14 @@
 package com.nimscreation.MyLinkedin.api_gateway.filter;
 
+import com.nimscreation.MyLinkedin.api_gateway.JwtService;
+import io.jsonwebtoken.JwtException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
+
 @Slf4j
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
