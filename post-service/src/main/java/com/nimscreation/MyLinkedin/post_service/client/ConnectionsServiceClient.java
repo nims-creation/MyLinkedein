@@ -1,7 +1,11 @@
 package com.nimscreation.MyLinkedin.post_service.client;
 
+import com.nimscreation.MyLinkedin.post_service.dto.PersonDto;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 @FeignClient(name = "connections-service", path = "/connections")
 public interface ConnectionsServiceClient {
