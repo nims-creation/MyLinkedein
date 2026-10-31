@@ -1,6 +1,11 @@
 spring:
   application:
     name: post-service
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
   datasource:
     url: jdbc:postgresql://localhost:5432/postDb
