@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: notification-service
+
+
+server:
+  port: 9040
+  servlet:
+    context-path: /notifications
