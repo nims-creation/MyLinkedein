@@ -1,5 +1,6 @@
 package com.nimscreation.MyLinkedin.ConnectionService.auth;
 
+import feign.RequestTemplate;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,9 +1,21 @@
 spring:
   application:
     name: notification-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/notificationDB
+    username: postgres
+    password: Nitesh1404
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 
 
 server:
   port: 9040
   servlet:
     context-path: /notifications
+
+eureka:
+  client:
+    service-url: http://localhost:8761/eureka/

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class PostCreatedEvent {
+    private Long ownerUserId;
     private Long postId;
     private Long userId;
     private String content;

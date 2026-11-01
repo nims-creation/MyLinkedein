@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+import org.aspectj.internal.lang.annotation.ajcDeclareEoW;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
