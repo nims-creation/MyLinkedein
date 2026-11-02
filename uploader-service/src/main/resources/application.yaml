@@ -1,3 +1,20 @@
-spring:
-  application:
-    name: uploader-service
+  spring:
+    application:
+      name: uploader-service
+
+  server:
+    servlet:
+      context-path: /upload
+    port: 9050
+
+  cloudinary:
+    cloud-name: dt0a7j8v2
+    api-key: 634563189126821
+    api-secret: dHnuEFd3o924gQHzPJOSXAcuM9g
+
+  eureka:
+    client:
+      register-with-eureka: true
+      fetch-registry: true
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
