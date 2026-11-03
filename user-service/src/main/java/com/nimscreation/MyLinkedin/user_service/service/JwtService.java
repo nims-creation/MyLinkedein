@@ -3,7 +3,7 @@ package com.nimscreation.MyLinkedin.user_service.service;
 import com.nimscreation.MyLinkedin.user_service.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
