@@ -1,15 +1,32 @@
+
 spring:
   application:
     name: notification-service
+
   datasource:
-    url: jdbc:postgresql://localhost:5433/notificationDB
-    username: postgres
-    password: Nitesh1404
+    url: jdbc:postgresql://localhost:5433/posts_db
+    username: myuser
+    password: ${DB_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Kolkata
 
+  kafka:
+    bootstrap-servers: localhost:9092
 
+    consumer:
+      group-id: notification-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+      properties:
+        spring.json.trusted.packages: "com.nimscreation.MyLinkedin.post_service.events"
 
 server:
   port: 9040
@@ -18,4 +35,5 @@ server:
 
 eureka:
   client:
-    service-url: http://localhost:8761/eureka/
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
