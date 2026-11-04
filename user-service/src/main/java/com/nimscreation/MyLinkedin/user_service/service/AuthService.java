@@ -141,13 +141,10 @@ public class AuthService {
             log.info("Password reset email processed");
 
         } catch (Exception e) {
-
             passwordResetTokenRepository.delete(resetToken);
+            log.error("Unable to send password reset email", e);
+            throw new IllegalStateException("Unable to process password reset request");
 
-            log.error("Unable to send password reset email");
-            throw new IllegalStateException(
-                    "Unable to process password reset request"
-            );
         }
     }
 
@@ -158,6 +155,16 @@ public class AuthService {
         if (token == null || token.isBlank()
                 || newPassword == null || newPassword.isBlank()) {
             throw new BadRequestException("Invalid password reset request");
+        }
+
+        String passwordPattern =
+                "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9\\s])\\S{8,}$";
+
+        if (!newPassword.matches(passwordPattern)) {
+            throw new BadRequestException(
+                    "Password must contain at least 8 characters, " +
+                            "one uppercase, one lowercase, one digit and one special character"
+            );
         }
 
         String tokenHash = passwordResetTokenService.hashToken(token);
