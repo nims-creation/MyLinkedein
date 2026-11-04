@@ -1,8 +1,6 @@
 package com.nimscreation.MyLinkedin.user_service.controller;
 
-import com.nimscreation.MyLinkedin.user_service.dto.LoginRequestDto;
-import com.nimscreation.MyLinkedin.user_service.dto.SignupRequestDto;
-import com.nimscreation.MyLinkedin.user_service.dto.UserDto;
+import com.nimscreation.MyLinkedin.user_service.dto.*;
 import com.nimscreation.MyLinkedin.user_service.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,4 +28,29 @@ public class UserController {
         String token = authService.login(loginRequestDto);
         return ResponseEntity.ok(token);
     }
+
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(
+            @RequestBody ForgotPasswordRequestDto request) {
+
+        authService.forgotPassword(request.getEmail());
+
+        return ResponseEntity.ok(
+                "If the account exists, a password reset link will be sent."
+        );
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(
+            @RequestBody ResetPasswordRequestDto request) {
+
+        authService.resetPassword(
+                request.getToken(),
+                request.getNewPassword()
+        );
+
+        return ResponseEntity.ok("Password reset successfully");
+    }
+
 }
