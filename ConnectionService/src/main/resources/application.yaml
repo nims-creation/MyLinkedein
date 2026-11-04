@@ -6,7 +6,7 @@ spring:
     uri: bolt://localhost:7687
     authentication:
       username: neo4j
-      password: YourStrongPassword123
+      password: ${NEO4J_PASSWORD}
 
   kafka:
     consumer:
@@ -24,3 +24,7 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     register-with-eureka: true
     fetch-registry: true
+
+jwt:
+  secretKey: ${JWT_SECRET_KEY}
+
