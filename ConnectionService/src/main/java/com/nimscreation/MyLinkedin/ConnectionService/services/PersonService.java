@@ -2,8 +2,10 @@ package com.nimscreation.MyLinkedin.ConnectionService.services;
 
 import com.nimscreation.MyLinkedin.ConnectionService.entity.Person;
 import com.nimscreation.MyLinkedin.ConnectionService.repository.PersonRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,8 +16,14 @@ public class PersonService {
     private final PersonRepository personRepository;
 
     public void createPerson(Long userId, String name) {
-        Person person = Person.builder().name(name).userId(userId).build();
-        personRepository.save(person);
-    }
 
+        Person person = Person.builder()
+                .name(name)
+                .userId(userId)
+                .build();
+
+        personRepository.save(person);
+
+        log.info("Person created successfully for userId: {}", userId);
+    }
 }
