@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import jakarta.annotation.PostConstruct;
+import java.security.MessageDigest;
+import java.util.HexFormat;
+
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 @Slf4j
@@ -74,6 +78,15 @@ public class RequestInterceptor implements HandlerInterceptor {
             Exception ex) throws Exception {
 
         AuthContextHolder.clear();
+    }
+
+    @PostConstruct
+    public void checkJwtConfiguration() throws Exception {
+        byte[] hash = MessageDigest.getInstance("SHA-256")
+                .digest(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
+
+        System.out.println("CONNECTION SERVICE JWT FINGERPRINT: "
+                + HexFormat.of().formatHex(hash));
     }
 
 
