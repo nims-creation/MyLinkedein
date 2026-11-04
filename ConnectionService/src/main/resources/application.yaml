@@ -1,11 +1,18 @@
+
 spring:
   application:
-    name: ConnectionService
+    name: connections-service
+
   neo4j:
     uri: bolt://neo4j:7687
     authentication:
       username: neo4j
       password: Nitesh1404
+
+  kafka:
+    consumer:
+      group-id: connection-service-group
+      auto-offset-reset: earliest
 
 server:
   servlet:
@@ -14,8 +21,7 @@ server:
 
 eureka:
   client:
-    service-url: http://localhost:8761/eureka
-
-
-
-
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true

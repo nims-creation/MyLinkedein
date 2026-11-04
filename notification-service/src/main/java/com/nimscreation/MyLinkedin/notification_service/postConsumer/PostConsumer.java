@@ -4,6 +4,7 @@ import com.nimscreation.MyLinkedin.notification_service.entity.Notification;
 import com.nimscreation.MyLinkedin.notification_service.services.NotificationService;
 import com.nimscreation.MyLinkedin.post_service.events.PostCreatedEvent;
 import com.nimscreation.MyLinkedin.post_service.events.PostLikedEvent;
+import com.nimscreation.MyLinkedin.notification_service.events.UserCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,4 +56,24 @@ public class PostConsumer {
 
         notificationService.addNotification(notification);
     }
+
+
+    @KafkaListener(topics = "user_created_topic")
+    public void handleUserCreated(UserCreatedEvent userCreated) {
+
+        log.info("handleUserCreated: {}", userCreated);
+
+        String message = String.format(
+                "Welcome to MyLinkedin, %s! Your account has been created successfully.",
+                userCreated.getName()
+        );
+
+        Notification notification = Notification.builder()
+                .message(message)
+                .userId(userCreated.getUserId())
+                .build();
+
+        notificationService.addNotification(notification);
+    }
+
 }

@@ -3,11 +3,6 @@ spring:
   application:
     name: notification-service
 
-  datasource:
-    url: jdbc:postgresql://localhost:5433/posts_db
-    username: myuser
-    password: ${DB_PASSWORD}
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,15 +13,21 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9092
-
     consumer:
       group-id: notification-service-group
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-
       properties:
-        spring.json.trusted.packages: "com.nimscreation.MyLinkedin.post_service.events"
+        spring.json.use.type.headers: true
+        spring.json.value.default.type: com.nimscreation.MyLinkedin.notification_service.events.UserCreatedEvent
+        spring.json.trusted.packages: "com.nimscreation.MyLinkedin.post_service.events,com.nimscreation.MyLinkedin.notification_service.events"
+        spring.json.type.mapping: "com.nimscreation.MyLinkedin.user_service.events.UserCreatedEvent:com.nimscreation.MyLinkedin.notification_service.events.UserCreatedEvent"
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/notification_db
+    username: postgres
+    password: ${DB_PASSWORD}
 
 server:
   port: 9040
