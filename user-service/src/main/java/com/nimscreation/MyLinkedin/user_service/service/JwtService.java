@@ -28,8 +28,9 @@ public class JwtService {
         return Jwts.builder()
                 .subject(user.getId().toString())
                 .claim("email", user.getEmail())
+                .claim("tokenVersion", user.getTokenVersion())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000*60*100))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 100))
                 .signWith(getSecretKey())
                 .compact();
     }
