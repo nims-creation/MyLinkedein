@@ -1,6 +1,6 @@
 package com.nimscreation.MyLinkedin.api_gateway.filter;
 
-import com.nimscreation.MyLinkedin.api_gateway.JwtService;
+import com.nimscreation.MyLinkedin.api_gateway.service.JwtService;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;

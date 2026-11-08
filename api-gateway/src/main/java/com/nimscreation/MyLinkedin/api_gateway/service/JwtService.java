@@ -1,4 +1,4 @@
-package com.nimscreation.MyLinkedin.api_gateway;
+package com.nimscreation.MyLinkedin.api_gateway.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
