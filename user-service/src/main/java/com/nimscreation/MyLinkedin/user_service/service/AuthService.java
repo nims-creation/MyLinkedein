@@ -32,12 +32,12 @@ public class AuthService {
     private final ModelMapper modelMapper;
     private final JwtService jwtService;
 
-    private final KafkaTemplate<Long, UserCreatedEvent>
-            userCreatedEventKafkaTemplate;
+    private final KafkaTemplate<Long, UserCreatedEvent> userCreatedEventKafkaTemplate;
 
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordResetTokenService passwordResetTokenService;
     private final EmailService emailService;
+    private final TokenVersionService tokenVersionService;
 
     // SIGNUP
     public UserDto signUp(SignupRequestDto signupRequestDto) {
@@ -94,6 +94,11 @@ public class AuthService {
         if (!isPasswordMatch) {
             throw new BadRequestException("Incorrect email or password");
         }
+
+        tokenVersionService.initializeIfAbsent(
+                user.getId(),
+                user.getTokenVersion()
+        );
 
         return jwtService.generateAccessToken(user);
     }
@@ -188,6 +193,8 @@ public class AuthService {
         user.setPassword(
                 BCrypt.hashpw(newPassword, BCrypt.gensalt())
         );
+
+        user.setTokenVersion(user.getTokenVersion() + 1);
 
         userRepository.save(user);
 
