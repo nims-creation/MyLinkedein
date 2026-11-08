@@ -10,6 +10,8 @@ import com.nimscreation.MyLinkedin.user_service.events.UserCreatedEvent;
 import com.nimscreation.MyLinkedin.user_service.exception.BadRequestException;
 import com.nimscreation.MyLinkedin.user_service.repository.PasswordResetTokenRepository;
 import com.nimscreation.MyLinkedin.user_service.repository.UserRepository;
+import org.springframework.context.ApplicationEventPublisher;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -38,6 +41,7 @@ public class AuthService {
     private final PasswordResetTokenService passwordResetTokenService;
     private final EmailService emailService;
     private final TokenVersionService tokenVersionService;
+    private final ApplicationEventPublisher eventPublisher;
 
     // SIGNUP
     public UserDto signUp(SignupRequestDto signupRequestDto) {
@@ -100,6 +104,15 @@ public class AuthService {
                 user.getTokenVersion()
         );
 
+        if (!tokenVersionService.isCurrentVersion(
+                user.getId(),
+                user.getTokenVersion()
+        )) {
+            throw new IllegalStateException(
+                    "Token version mismatch. Please contact support."
+            );
+        }
+
         return jwtService.generateAccessToken(user);
     }
 
@@ -157,8 +170,7 @@ public class AuthService {
     @Transactional
     public void resetPassword(String token, String newPassword) {
 
-        if (token == null || token.isBlank()
-                || newPassword == null || newPassword.isBlank()) {
+        if (token == null || token.isBlank() || newPassword == null || newPassword.isBlank()) {
             throw new BadRequestException("Invalid password reset request");
         }
 
@@ -197,6 +209,13 @@ public class AuthService {
         user.setTokenVersion(user.getTokenVersion() + 1);
 
         userRepository.save(user);
+
+        eventPublisher.publishEvent(
+                new TokenVersionUpdatedEvent(
+                        user.getId(),
+                        user.getTokenVersion()
+                )
+        );
 
         // Mark token as used
         resetToken.setUsedAt(now);
