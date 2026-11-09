@@ -1,3 +1,4 @@
+
 package com.nimscreation.MyLinkedin.api_gateway.service;
 
 import io.jsonwebtoken.Claims;
@@ -17,16 +18,25 @@ public class JwtService {
     private String jwtSecretKey;
 
     private SecretKey getSecretKey() {
-        return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
+        return Keys.hmacShaKeyFor(
+                jwtSecretKey.getBytes(StandardCharsets.UTF_8)
+        );
     }
 
-    public String getUserIdFromToken(String token) {
-        Claims claims = Jwts.parser()
+    private Claims getClaimsFromToken(String token) {
+        return Jwts.parser()
                 .verifyWith(getSecretKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        return claims.getSubject();
     }
 
+    public String getUserIdFromToken(String token) {
+        return getClaimsFromToken(token).getSubject();
+    }
+
+    public Integer getTokenVersionFromToken(String token) {
+        return getClaimsFromToken(token)
+                .get("tokenVersion", Integer.class);
+    }
 }
