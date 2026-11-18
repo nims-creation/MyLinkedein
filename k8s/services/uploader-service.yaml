@@ -1,0 +1,68 @@
+# ============================================================
+# Uploader Service — Deployment + Service
+# ============================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: uploader-service
+  namespace: mylinkedin
+spec:
+  selector:
+    app: uploader-service
+  ports:
+    - port: 9050
+      targetPort: 9050
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uploader-service
+  namespace: mylinkedin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uploader-service
+  template:
+    metadata:
+      labels:
+        app: uploader-service
+    spec:
+      containers:
+        - name: uploader-service
+          image: mylinkedin/uploader-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9050
+          envFrom:
+            - configMapRef:
+                name: mylinkedin-config
+          env:
+            - name: CLOUDINARY_CLOUD_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: mylinkedin-secrets
+                  key: CLOUDINARY_CLOUD_NAME
+            - name: CLOUDINARY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mylinkedin-secrets
+                  key: CLOUDINARY_API_KEY
+            - name: CLOUDINARY_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: mylinkedin-secrets
+                  key: CLOUDINARY_API_SECRET
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9050
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

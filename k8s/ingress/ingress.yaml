@@ -1,0 +1,41 @@
+# ============================================================
+# Ingress — routes all traffic through ALB (AWS) / nginx
+# ============================================================
+# For AWS EKS: uses alb.ingress.kubernetes.io annotations
+# For GKE: change ingressClassName to "gce"
+# For local testing: change to ingressClassName: "nginx"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mylinkedin-ingress
+  namespace: mylinkedin
+  annotations:
+    # AWS ALB Ingress Controller annotations
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    # Uncomment and set your ACM cert ARN for HTTPS:
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:REGION:ACCOUNT:certificate/CERT-ID
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          # API traffic → api-gateway
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8080
+          # Everything else → frontend (React SPA)
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80

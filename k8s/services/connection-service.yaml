@@ -1,0 +1,63 @@
+# ============================================================
+# Connection Service — Deployment + Service
+# ============================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: connection-service
+  namespace: mylinkedin
+spec:
+  selector:
+    app: connection-service
+  ports:
+    - port: 9030
+      targetPort: 9030
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connection-service
+  namespace: mylinkedin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: connection-service
+  template:
+    metadata:
+      labels:
+        app: connection-service
+    spec:
+      containers:
+        - name: connection-service
+          image: mylinkedin/connection-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9030
+          envFrom:
+            - configMapRef:
+                name: mylinkedin-config
+          env:
+            - name: SPRING_NEO4J_AUTHENTICATION_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mylinkedin-secrets
+                  key: NEO4J_PASSWORD
+            - name: SPRING_DATA_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mylinkedin-secrets
+                  key: REDIS_PASSWORD
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9030
+            initialDelaySeconds: 40
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
