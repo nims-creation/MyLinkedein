@@ -1,0 +1,136 @@
+# ============================================================================
+# CI/CD Pipeline — MyLinkedin Microservices
+# Badge: https://github.com/nims-creation/MyLinkedein/actions/workflows/ci.yml/badge.svg
+# Usage: ![CI](https://github.com/nims-creation/MyLinkedein/actions/workflows/ci.yml/badge.svg)
+# ============================================================================
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  # ── Build & Test all backend services in parallel ──
+  build-backend:
+    name: Build ${{ matrix.service }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - user-service
+          - post-service
+          - ConnectionService
+          - notification-service
+          - uploader-service
+          - api-gateway
+          - discovery-server
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          cache-dependency-path: ${{ matrix.service }}/pom.xml
+
+      - name: Build ${{ matrix.service }}
+        run: |
+          cd ${{ matrix.service }}
+          chmod +x mvnw
+          ./mvnw clean verify -DskipTests -B
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.service }}-build
+          path: ${{ matrix.service }}/target/*.jar
+          retention-days: 1
+
+  # ── Build React frontend ──
+  build-frontend:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: npm
+          cache-dependency-path: mylinkedin-frontend/package-lock.json
+
+      - name: Install dependencies & build
+        run: |
+          cd mylinkedin-frontend
+          npm ci
+          npm run build
+
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: mylinkedin-frontend/dist/
+          retention-days: 1
+
+  # ── Build & push Docker images (only on push to main) ──
+  docker-push:
+    name: Docker ${{ matrix.component }}
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [build-backend, build-frontend]
+    strategy:
+      fail-fast: false
+      matrix:
+        component:
+          - user-service
+          - post-service
+          - ConnectionService
+          - notification-service
+          - uploader-service
+          - api-gateway
+          - discovery-server
+          - mylinkedin-frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set image name
+        id: meta
+        run: |
+          COMPONENT="${{ matrix.component }}"
+          IMAGE_NAME="ghcr.io/${{ github.repository_owner }}/${COMPONENT,,}"
+          echo "image=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build & push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ matrix.component }}
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.image }}:latest
+            ${{ steps.meta.outputs.image }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
