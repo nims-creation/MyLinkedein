@@ -17,6 +17,10 @@
   <img src="https://img.shields.io/badge/Kafka-KRaft-231F20?logo=apachekafka" alt="Kafka" />
   <img src="https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker" alt="Docker" />
   <img src="https://img.shields.io/badge/Kubernetes-Ready-326CE5?logo=kubernetes" alt="K8s" />
+  <br/>
+  <a href="https://github.com/nims-creation/MyLinkedein/actions/workflows/ci.yml">
+    <img src="https://github.com/nims-creation/MyLinkedein/actions/workflows/ci.yml/badge.svg" alt="CI/CD Pipeline" />
+  </a>
 </p>
 
 ---
