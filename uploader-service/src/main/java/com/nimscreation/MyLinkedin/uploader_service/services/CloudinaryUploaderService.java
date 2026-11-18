@@ -10,8 +10,9 @@ import java.io.IOException;
 import java.util.Map;
 
 @Slf4j
+@Service
 @RequiredArgsConstructor
-public class CloudinaryUploaderService implements UploaderService{
+public class CloudinaryUploaderService implements UploaderService {
 
     private final Cloudinary cloudinary;
 
@@ -21,8 +22,7 @@ public class CloudinaryUploaderService implements UploaderService{
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), Map.of());
             return uploadResult.get("secure_url").toString();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to upload file to Cloudinary", e);
         }
-
     }
 }
