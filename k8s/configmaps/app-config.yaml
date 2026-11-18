@@ -13,3 +13,4 @@ data:
   SPRING_DATASOURCE_URL_POST: "jdbc:postgresql://postgres:5432/postDb"
   SPRING_DATASOURCE_URL_NOTIFICATION: "jdbc:postgresql://postgres:5432/notification_db"
   SPRING_DATASOURCE_USERNAME: "postgres"
+  ZIPKIN_URL: "http://zipkin:9411/api/v2/spans"

@@ -30,6 +30,7 @@ kubectl apply -f k8s/infrastructure/postgres.yaml $DRY_RUN
 kubectl apply -f k8s/infrastructure/redis.yaml $DRY_RUN
 kubectl apply -f k8s/infrastructure/neo4j.yaml $DRY_RUN
 kubectl apply -f k8s/infrastructure/kafka.yaml $DRY_RUN
+kubectl apply -f k8s/infrastructure/zipkin.yaml $DRY_RUN
 
 # 4. Wait for infrastructure to be ready
 if [ -z "$DRY_RUN" ]; then
