@@ -1,4 +1,3 @@
-
 package com.nimscreation.MyLinkedin.user_service.config;
 
 import org.springframework.context.annotation.Bean;
@@ -15,16 +14,25 @@ public class SecurityConfig {
             throws Exception {
 
         http
+                // Disable CSRF for stateless REST API
                 .csrf(csrf -> csrf.disable())
 
+                // Stateless session management
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
                         )
                 )
 
+                // Authorization rules
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(
+                                "/auth/login",
+                                "/auth/signup",
+                                "/auth/forgot-password",
+                                "/auth/reset-password",
+                                "/error"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 );
 

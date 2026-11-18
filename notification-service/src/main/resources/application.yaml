@@ -12,7 +12,7 @@ spring:
           time_zone: Asia/Kolkata
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: notification-service-group
       auto-offset-reset: earliest
@@ -24,8 +24,8 @@ spring:
         spring.json.type.mapping: "com.nimscreation.MyLinkedin.user_service.events.UserCreatedEvent:com.nimscreation.MyLinkedin.notification_service.events.UserCreatedEvent"
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/notification_db
-    username: postgres
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/notification_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${DB_PASSWORD}
 
 server:
@@ -36,4 +36,4 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
