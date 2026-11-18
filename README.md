@@ -54,8 +54,10 @@
 - 🕸️ **Graph Database** — Neo4j for social connections (1st-degree, 2nd-degree, recommendations)
 - 🔐 **JWT Authentication** — secure, stateless auth with token versioning & password reset
 - ⚡ **Redis Caching** — session management and rate limiting at API Gateway
+- 🔍 **Distributed Tracing** — Zipkin + Micrometer for end-to-end request tracing
 - ☁️ **Cloud-Native** — fully containerized with Docker Compose & Kubernetes manifests
 - 🔄 **Service Discovery** — Netflix Eureka for dynamic service registration & load balancing
+- 🚀 **CI/CD Pipeline** — GitHub Actions for automated build, test & Docker image publishing
 
 ---
 
@@ -95,6 +97,10 @@ flowchart TB
         KF["📨 Apache Kafka<br/>KRaft Mode"]
     end
 
+    subgraph Observability["Observability"]
+        ZK["🔍 Zipkin<br/>Port 9411<br/>Distributed Tracing"]
+    end
+
     subgraph Databases["Data Stores"]
         PG["🐘 PostgreSQL<br/>userDb · postDb · notification_db"]
         N4["🕸️ Neo4j<br/>Graph DB"]
@@ -120,6 +126,11 @@ flowchart TB
     CS --> RD
     GW --> RD
     UL --> CL
+
+    US -.->|"Traces"| ZK
+    PS -.->|"Traces"| ZK
+    CS -.->|"Traces"| ZK
+    GW -.->|"Traces"| ZK
 ```
 
 ---
@@ -139,6 +150,8 @@ flowchart TB
 | **Media Storage** | Cloudinary | Image & File CDN |
 | **Containerization** | Docker, Docker Compose | Multi-container orchestration |
 | **Orchestration** | Kubernetes | Production deployment manifests |
+| **CI/CD** | GitHub Actions | Automated build, test & Docker push |
+| **Tracing** | Zipkin + Micrometer Brave | Distributed tracing & log correlation |
 | **Build Tool** | Maven (mvnw) | Dependency management & build |
 
 ---
@@ -330,7 +343,7 @@ flowchart LR
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/MyLinkedin.git
+git clone https://github.com/nims-creation/MyLinkedein.git
 cd MyLinkedin
 
 # 2. Create environment file
@@ -352,6 +365,7 @@ docker compose ps
 | 📡 **Eureka Dashboard** | [http://localhost:8761](http://localhost:8761) |
 | 🚪 **API Gateway** | [http://localhost:8080](http://localhost:8080) |
 | 🕸️ **Neo4j Browser** | [http://localhost:7474](http://localhost:7474) |
+| 🔍 **Zipkin Tracing UI** | [http://localhost:9411](http://localhost:9411) |
 
 ### Environment Variables (`.env`)
 
@@ -390,11 +404,11 @@ All services run as isolated containers connected via Docker networking:
 │  │ Postgres │  │  Neo4j   │  │  Kafka   │          │
 │  │  :5432   │  │  :7687   │  │  :9092   │          │
 │  └──────────┘  └──────────┘  └──────────┘          │
-│  ┌──────────┐  ┌──────────┐                         │
-│  │  Redis   │  │ Eureka   │                         │
-│  │  :6379   │  │  :8761   │                         │
-│  └──────────┘  └──────────┘                         │
-│       ↕              ↕                               │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐          │
+│  │  Redis   │  │ Eureka   │  │  Zipkin  │          │
+│  │  :6379   │  │  :8761   │  │  :9411   │          │
+│  └──────────┘  └──────────┘  └──────────┘          │
+│       ↕              ↕              ↕               │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐          │
 │  │ Gateway  │  │ User Svc │  │ Post Svc │          │
 │  │  :8080   │  │  :9020   │  │  :9010   │          │
@@ -449,6 +463,7 @@ k8s/
 │   ├── redis.yaml                     # StatefulSet + PVC
 │   ├── neo4j.yaml                     # StatefulSet + PVC
 │   ├── kafka.yaml                     # StatefulSet + PVC
+│   ├── zipkin.yaml                    # Deployment + Service (tracing)
 │   └── postgres-init-configmap.yaml   # Multi-DB init script
 ├── services/
 │   ├── discovery-server.yaml          # Deployment (1 replica)
@@ -489,6 +504,9 @@ kubectl get all -n mylinkedin
 
 ```
 MyLinkedin/
+├── 📁 .github/workflows/           # CI/CD Pipeline
+│   ├── ci.yml                       # Build + Test + Docker Push
+│   └── pr-check.yml                 # PR Validation
 ├── 📁 api-gateway/              # Spring Cloud Gateway (JWT + Routing)
 │   └── src/main/
 ├── 📁 discovery-server/         # Netflix Eureka Server
@@ -517,7 +535,8 @@ MyLinkedin/
 │   ├── frontend/
 │   └── ingress/
 ├── 📁 docs/                     # Architecture diagrams
-│   └── system-design.png
+│   ├── system-design.png
+│   └── logo.svg
 ├── 📄 docker-compose.yml        # Full-stack Docker Compose
 ├── 📄 .env.example              # Environment template
 ├── 📄 .gitignore
@@ -528,15 +547,21 @@ MyLinkedin/
 
 ## 🗺️ Future Roadmap
 
-- [ ] **Observability** — Zipkin distributed tracing + ELK centralized logging
+### ✅ Completed
+- [x] **Distributed Tracing** — Zipkin + Micrometer Brave across all microservices
+- [x] **CI/CD Pipeline** — GitHub Actions for automated build, test & Docker image publishing to GHCR
+- [x] **Kubernetes Manifests** — Production-ready K8s deployment with StatefulSets, Deployments & Ingress
+- [x] **Dockerization** — Multi-stage Docker builds for all services + Docker Compose orchestration
+- [x] **Cloudinary Integration** — Media upload via CDN (replaced Google Cloud Storage)
+
+### 🔮 Planned
 - [ ] **Config Server** — Spring Cloud Config for centralized configuration
-- [ ] **CI/CD Pipeline** — GitHub Actions for automated build, test & deploy
+- [ ] **ELK Stack** — Elasticsearch + Logstash + Kibana for centralized logging
 - [ ] **Search Service** — Elasticsearch for user/post search
 - [ ] **Messaging Service** — Real-time chat using WebSockets
 - [ ] **Feed Algorithm** — Personalized feed based on connections & interactions
 - [ ] **Profile Photos** — Integrate uploader-service with user profiles
 - [ ] **Comments** — Comment on posts with threaded replies
-- [ ] **Email Notifications** — SMTP integration for password reset & alerts
 
 ---
 
@@ -557,5 +582,5 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 <p align="center">
-  Built with ❤️ by <a href="https://github.com/yourusername"><b>NimsCreation</b></a>
+  Built with ❤️ by <a href="https://github.com/nims-creation"><b>NimsCreation</b></a>
 </p>
