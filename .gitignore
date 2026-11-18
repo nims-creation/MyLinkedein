@@ -27,3 +27,12 @@ Thumbs.db
 
 # Redis environment
 infrastructure/redis/.env
+
+# Node modules
+node_modules/
+mylinkedin-frontend/node_modules/
+
+# Build outputs
+dist/
+build/
+mylinkedin-frontend/dist/
