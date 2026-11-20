@@ -1,0 +1,11 @@
+# MyLinkedin code ownership
+#
+# The repository owner reviews incoming contributions.
+# GitHub automatically requests reviews from code owners on pull requests
+# that modify matching paths (when permissions and repository settings allow).
+#
+# Important: the pull request author cannot approve their own PR.
+# If contributing alone, do NOT enable mandatory code-owner approvals
+# until another qualified maintainer is available to review your PRs.
+
+* @nims-creation
