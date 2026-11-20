@@ -1,0 +1,88 @@
+name: "Bug report"
+description: "Report an unexpected behavior or a reproducible defect in MyLinkedin."
+title: "[Bug]: "
+labels:
+  - "bug"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve MyLinkedin! Please search existing issues before submitting.
+        **Security:** Do not disclose credentials, tokens, private user data, or exploitable security vulnerabilities in public issues. Contact the maintainer privately through their GitHub profile instead.
+  - type: dropdown
+    id: component
+    attributes:
+      label: "Affected component"
+      description: "Choose the area where you observed the problem."
+      options:
+        - "API Gateway"
+        - "User Service"
+        - "Post Service"
+        - "Connection Service"
+        - "Notification Service"
+        - "Uploader Service"
+        - "Discovery Server"
+        - "Frontend (React)"
+        - "Docker / Kubernetes"
+        - "CI/CD"
+        - "Other / Unsure"
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: "What went wrong?"
+      description: "Describe the issue and why it matters."
+      placeholder: "When I ..., the application ..."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: "Steps to reproduce"
+      description: "Include precise steps, sample requests, and preconditions using only non-sensitive test data."
+      placeholder: |
+        1. Start the application with ...
+        2. Open ...
+        3. Send request ...
+        4. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected behavior"
+      placeholder: "What should have happened?"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual behavior"
+      placeholder: "What happened instead? Include errors or response codes if applicable."
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "OS, Java/Node versions, run mode (Docker Compose/Kubernetes/local), browser, and relevant service versions."
+      placeholder: |
+        OS:
+        Java / Node:
+        Run mode:
+        Browser:
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Logs, screenshots, or other evidence (optional)"
+      description: "Redact tokens, email addresses, personal data, internal URLs, and passwords before sharing."
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Before submitting"
+      options:
+        - label: "I searched existing issues for a duplicate report."
+          required: true
+        - label: "I removed secrets and personal information from the report."
+          required: true
