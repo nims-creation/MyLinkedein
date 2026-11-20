@@ -5,7 +5,7 @@
 <h1 align="center">MyLinkedin</h1>
 
 <p align="center">
-  <b>A production-grade LinkedIn clone built with Microservices Architecture</b>
+  <b>An open-source professional networking platform built with microservices</b>
   <br/>
   <sub>Spring Boot 4 · React 18 · Kafka · Neo4j · PostgreSQL · Redis · Docker · Kubernetes</sub>
 </p>
@@ -21,6 +21,13 @@
   <a href="https://github.com/nims-creation/MyLinkedein/actions/workflows/ci.yml">
     <img src="https://github.com/nims-creation/MyLinkedein/actions/workflows/ci.yml/badge.svg" alt="CI/CD Pipeline" />
   </a>
+</p>
+
+<p align="center">
+  <a href="CONTRIBUTING.md"><b>🤝 Contribute</b></a> ·
+  <a href="https://github.com/nims-creation/MyLinkedein/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22">Good First Issues</a> ·
+  <a href="https://github.com/nims-creation/MyLinkedein/issues/new/choose">Suggest a Feature / Report a Bug</a> ·
+  <a href="SECURITY.md">Security Policy</a>
 </p>
 
 ---
@@ -45,11 +52,11 @@
 
 ## 🎯 Overview
 
-**MyLinkedin** is a full-stack professional networking platform inspired by LinkedIn, built from scratch using **microservices architecture**. The system is designed to be scalable, resilient, and production-ready with event-driven communication, graph-based social connections, and containerized deployment.
+**MyLinkedin** is an open-source full-stack professional networking platform inspired by LinkedIn, built around **microservices architecture**. It explores event-driven communication, graph-based social connections, and containerized deployment. **The project is under active development:** contributors are welcome, and production readiness and automated test coverage should not be assumed.
 
 ### Key Highlights
 
-- 🏗️ **7 Independent Microservices** — each service owns its data, deployable independently
+- 🏗️ **7 Spring Boot components** — 5 domain services, an API Gateway, and a Eureka discovery server
 - 📡 **Event-Driven Architecture** — Kafka for async communication between services
 - 🕸️ **Graph Database** — Neo4j for social connections (1st-degree, 2nd-degree, recommendations)
 - 🔐 **JWT Authentication** — secure, stateless auth with token versioning & password reset
@@ -57,7 +64,7 @@
 - 🔍 **Distributed Tracing** — Zipkin + Micrometer for end-to-end request tracing
 - ☁️ **Cloud-Native** — fully containerized with Docker Compose & Kubernetes manifests
 - 🔄 **Service Discovery** — Netflix Eureka for dynamic service registration & load balancing
-- 🚀 **CI/CD Pipeline** — GitHub Actions for automated build, test & Docker image publishing
+- 🚀 **CI/CD Pipeline** — GitHub Actions for builds and Docker image publishing; backend tests are currently skipped in CI ([tracking issue](https://github.com/nims-creation/MyLinkedein/issues/5))
 
 ---
 
@@ -549,7 +556,7 @@ MyLinkedin/
 
 ### ✅ Completed
 - [x] **Distributed Tracing** — Zipkin + Micrometer Brave across all microservices
-- [x] **CI/CD Pipeline** — GitHub Actions for automated build, test & Docker image publishing to GHCR
+- [x] **CI/CD Pipeline** — GitHub Actions for parallel builds and Docker image publishing to GHCR (automated backend test enforcement is [planned](https://github.com/nims-creation/MyLinkedein/issues/5))
 - [x] **Kubernetes Manifests** — Production-ready K8s deployment with StatefulSets, Deployments & Ingress
 - [x] **Dockerization** — Multi-stage Docker builds for all services + Docker Compose orchestration
 - [x] **Cloudinary Integration** — Media upload via CDN (replaced Google Cloud Storage)
@@ -567,11 +574,39 @@ MyLinkedin/
 
 ## 🧑‍💻 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+**We welcome contributions!** Whether you are learning Java, exploring microservices, improving React accessibility, or working with distributed systems, there is room to help. MyLinkedin is an evolving community project, and thoughtful feedback is just as valuable as code.
+
+### 🚀 Your first contribution
+
+1. **Read [CONTRIBUTING.md](CONTRIBUTING.md)** for prerequisites, setup, branch naming, coding guidelines, and testing expectations.
+2. **Choose a task:** browse [good first issues](https://github.com/nims-creation/MyLinkedein/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22) or [help-wanted issues](https://github.com/nims-creation/MyLinkedein/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22help%20wanted%22).
+3. **Comment on the issue** to discuss the approach and avoid overlapping work. For major features or architectural changes, agree on a scope before writing code.
+4. **Fork, create a focused branch, and open a PR** against `main`. Link the issue and describe what changed, why, and how you tested it. GitHub will provide our [Pull Request template](.github/PULL_REQUEST_TEMPLATE.md).
+
+### 🧩 Where you can help
+
+| Area | Example contributions | Start here |
+| --- | --- | --- |
+| Documentation | Setup instructions and troubleshooting | [#2](https://github.com/nims-creation/MyLinkedein/issues/2), [#3](https://github.com/nims-creation/MyLinkedein/issues/3) |
+| Frontend & accessibility | Improve keyboard interactions and labels | [#4](https://github.com/nims-creation/MyLinkedein/issues/4) |
+| Testing & CI | Enable real backend test execution on PRs | [#5](https://github.com/nims-creation/MyLinkedein/issues/5) |
+| Event-driven reliability | Design retry-safe Kafka consumers | [#6](https://github.com/nims-creation/MyLinkedein/issues/6) |
+| Search & discovery | Search for people and posts | [#7](https://github.com/nims-creation/MyLinkedein/issues/7) |
+| Feed & ranking | Connection-aware home feed | [#8](https://github.com/nims-creation/MyLinkedein/issues/8) |
+
+These are **open proposals**, not finished features. Please review each issue's requirements and discuss large design changes before implementing them.
+
+### 💡 Suggest a feature or report a bug
+
+Use the [Issue chooser](https://github.com/nims-creation/MyLinkedein/issues/new/choose) to submit a structured **Feature Request** or **Bug Report**. For feature ideas, explain the user problem and expected behavior. For bugs, include reproduction steps, expected vs. actual results, and sanitized logs when possible.
+
+**Do not post vulnerabilities or credentials publicly.** Follow our [Security Policy](SECURITY.md) for coordinated private reporting.
+
+### 🤝 Community expectations
+
+Be constructive and respectful. Keep discussions focused on the problem and the tradeoffs, welcome contributors with different experience levels, and give credit for useful work. Review code rather than people. No contribution is considered merged until it has been reviewed.
+
+**A note on quality:** The current CI pipeline builds backend modules with `-DskipTests`, so a green CI badge **does not mean backend tests passed**. Include actual test results (or limitations) in your PR. Improving this is tracked in [#5](https://github.com/nims-creation/MyLinkedein/issues/5).
 
 ---
 
